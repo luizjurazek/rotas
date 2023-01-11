@@ -23,9 +23,9 @@ const Post = require('./models/Post');
         res.render('formulario');
     });
 
-    app.post('/add', function(req, res){
+    app.post('/add', function(req, res ){
         Post.create({
-            titulo: req.body.titulo,
+            titulo: req.body.titulo, 
             conteudo: req.body.conteudo
         }).then(function(){
             res.redirect('/')
