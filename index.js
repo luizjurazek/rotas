@@ -16,14 +16,19 @@ const Post = require('./models/Post');
 // Rotas
 
     app.get('/', function(req, res){
-        res.render('home');
+        Post.findAll({order: [['id', 'DESC']]}).then(function(posts){
+            res.render('home', {posts: posts});
+        })
+        
     })
 
+    // Rota formulário
     app.get('/cadastro', function(req, res){
         res.render('formulario');
     });
 
-    app.post('/add', function(req, res ){
+    // Rota POST 
+    app.post('/add', function(req, res){
         Post.create({
             titulo: req.body.titulo, 
             conteudo: req.body.conteudo
@@ -34,6 +39,14 @@ const Post = require('./models/Post');
         });
     })
 
+
+    app.get('/deletar/:id', function(req, res){
+        Post.destroy({where: {'id': req.params.id}}).then(function(){
+            res.redirect('/');
+        }).catch(function(erro){
+            res.send("Esta postagem não existe!");
+        })
+    })
 
 app.listen(8081, function () {
     console.log("Server rodando na url http://localhost:8081 ");
